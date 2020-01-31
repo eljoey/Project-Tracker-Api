@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const bugSchema = new Schema({
+const featureSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -34,6 +34,6 @@ const bugSchema = new Schema({
   ]
 })
 
-const Bug = mongoose.model('Bug', bugSchema)
+const Feature = mongoose.model('Feature', featureSchema)
 
-module.exports = Bug
+module.exports = Feature
