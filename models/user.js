@@ -8,7 +8,10 @@ const userSchema = new Schema({
     required: true,
     minLength: 3
   },
-  passwordHash: String,
+  passwordHash: {
+    type: String,
+    required: true
+  },
   created: {
     type: Date,
     required: true,
