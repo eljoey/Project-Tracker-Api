@@ -1,5 +1,7 @@
 const express = require('express')
 const logger = require('./utils/logger')
+const config = require('./utils/config')
+const middleware = require('./utils/middleware')
 
 const app = express()
 
@@ -20,3 +22,11 @@ mongoose
   .catch(err => {
     logger.error('error connecting to MongoDB')
   })
+
+app.use(middleware.requestLogger)
+
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
+
+const PORT = config.PORT || '3000'
+app.listen(PORT, () => logger.info(`app listening on port ${PORT}`))
