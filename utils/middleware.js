@@ -16,8 +16,8 @@ const errorHandler = (error, req, res, next) => {
   logger.error(error.message)
 
   // Can add more specific handling if needed
-  if (error.name === 'MongoError' && error.code === 11000) {
-    return res.status(400).send({ error: 'Username already in use.' })
+  if (error.name === 'ValidationError') {
+    return res.status(400).json({ error: error.message })
   }
 
   next(error)
