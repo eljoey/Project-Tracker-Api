@@ -18,6 +18,7 @@ logger.info('Connecting to DB...')
 mongoose
   .connect(mongoDB, {
     useNewUrlParser: true,
+    useCreateIndex: true,
     useUnifiedTopology: true,
     useFindAndModify: false
   })
