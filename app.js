@@ -2,6 +2,8 @@ const express = require('express')
 const logger = require('./utils/logger')
 const config = require('./utils/config')
 const middleware = require('./utils/middleware')
+const cors = require('cors')
+const bodyParser = require('body-parser')
 
 const apiRouter = require('./routes/api')
 const loginRouter = require('./routes/login')
@@ -26,6 +28,8 @@ mongoose
     logger.error('error connecting to MongoDB')
   })
 
+app.use(cors())
+app.use(bodyParser.json())
 app.use(middleware.requestLogger)
 
 app.use('/login', loginRouter)

@@ -6,7 +6,16 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
-    minLength: 3
+    minLength: 3,
+    unique: true
+  },
+  firstName: {
+    type: String,
+    required: true
+  },
+  lastName: {
+    type: String,
+    required: true
   },
   passwordHash: {
     type: String,
@@ -14,8 +23,7 @@ const userSchema = new Schema({
   },
   created: {
     type: Date,
-    required: true,
-    default: Date.now()
+    required: true
   },
   projects: [
     {
