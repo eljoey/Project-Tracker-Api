@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const projectSchema = new Schema({
   name: {
-    type: Schema,
+    type: String,
     required: true
   },
   admin: {
@@ -12,11 +12,13 @@ const projectSchema = new Schema({
     ref: 'User',
     required: true
   },
-  members: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
+  // members: [
+  //   {
+  //     type: Schema.Types.ObjectId,
+  //     ref: 'User',
+  //     required: true
+  //   }
+  // ],
   created: {
     type: Date,
     required: true,

@@ -5,6 +5,8 @@ const { userRouter, projectRouter } = require('./controllers/index')
 
 router.post('/user/create', userRouter.user_create_post)
 
-router.get('/user/:id', userRouter.user_id_get)
+router.get('/:id', userRouter.user_id_get)
+
+router.post('/:id/project/create', projectRouter.project_create_post)
 
 module.exports = router
