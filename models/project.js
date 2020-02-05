@@ -7,18 +7,22 @@ const projectSchema = new Schema({
     type: String,
     required: true
   },
+  description: {
+    type: String,
+    required: true
+  },
   admin: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  // members: [
-  //   {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'User',
-  //     required: true
-  //   }
-  // ],
+  members: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    }
+  ],
   created: {
     type: Date,
     required: true,
