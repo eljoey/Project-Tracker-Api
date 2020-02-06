@@ -4,5 +4,6 @@ const featureRouter = require('./feature/featureController')
 
 module.exports = {
   userRouter,
-  projectRouter
+  projectRouter,
+  featureRouter
 }

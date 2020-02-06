@@ -25,4 +25,12 @@ router.post(
   projectRouter.project_delete_post
 )
 
+// Create feature: POST
+router.post(
+  '/:userId/project/:projId/feature/create',
+  featureRouter.feature_create_post
+)
+
 module.exports = router
+
+// TODO: BETTER ROUTES

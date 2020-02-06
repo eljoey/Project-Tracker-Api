@@ -2,7 +2,6 @@ const Project = require('../../../models/project')
 const User = require('../../../models/user')
 
 exports.project_id_get = async (req, res, next) => {
-  const userId = req.params.userId
   const projectId = req.params.projId
 
   try {
@@ -45,8 +44,6 @@ exports.project_create_post = async (req, res, next) => {
     await user.save()
 
     res.send(savedProject)
-
-    res.send(members)
   } catch (err) {
     next(err)
   }
