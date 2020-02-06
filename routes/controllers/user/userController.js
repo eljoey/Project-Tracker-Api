@@ -2,7 +2,7 @@ const User = require('../../../models/user')
 const bcrypt = require('bcrypt')
 
 exports.user_id_get = async (req, res, next) => {
-  const userId = req.params.id
+  const userId = req.params.userId
 
   try {
     const userInfo = await (await User.findById(userId)).populate('projects')

@@ -1,9 +1,26 @@
 const Project = require('../../../models/project')
 const User = require('../../../models/user')
 
+exports.project_id_get = async (req, res, next) => {
+  const userId = req.params.userId
+  const projectId = req.params.projId
+
+  try {
+    const project = await Project.findById(projectId)
+      // .populate('bugs')
+      // .populate('features')
+      .populate('members', ['username', 'firstName', 'lastName'])
+      .populate('admin', ['username', 'firstName', 'lastName'])
+
+    res.send(project)
+  } catch (err) {
+    next(err)
+  }
+}
+
 exports.project_create_post = async (req, res, next) => {
   const body = req.body
-  const userId = req.params.id
+  const userId = req.params.userId
 
   try {
     const user = await User.findById(userId)
@@ -22,7 +39,6 @@ exports.project_create_post = async (req, res, next) => {
       members,
       created: Date.now()
     })
-    console.log(newProject)
 
     const savedProject = await newProject.save()
     user.projects = user.projects.concat(savedProject)
@@ -34,4 +50,11 @@ exports.project_create_post = async (req, res, next) => {
   } catch (err) {
     next(err)
   }
+}
+
+exports.project_delete_post = async (req, res, next) => {
+  const userId = req.params.userId
+  const projectId = req.params.projId
+
+  // TODO
 }
