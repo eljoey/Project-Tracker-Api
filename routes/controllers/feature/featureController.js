@@ -18,6 +18,18 @@ exports.features_get = async (req, res, next) => {
   }
 }
 
+exports.feature_id_get = async (req, res, next) => {
+  const featureId = req.params.featureId
+
+  try {
+    const feature = await Feature.findById(featureId)
+
+    res.send(feature)
+  } catch (err) {
+    next(err)
+  }
+}
+
 exports.feature_create_post = async (req, res, next) => {
   const body = req.body
   const userId = req.params.userId

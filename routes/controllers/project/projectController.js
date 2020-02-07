@@ -22,8 +22,9 @@ exports.project_id_get = async (req, res, next) => {
 
   try {
     const project = await Project.findById(projectId)
+      // TODO: Implment bugs and features
       // .populate('bugs')
-      // .populate('features')
+      .populate('features')
       .populate('members', ['username', 'firstName', 'lastName'])
       .populate('admin', ['username', 'firstName', 'lastName'])
 

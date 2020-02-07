@@ -31,6 +31,12 @@ router.post(
 // Find all features in Project: GET
 router.get('/:userId/project/:projId/features', featureRouter.features_get)
 
+// Find single feature by ID: GET
+router.get(
+  '/:userId/project/:projId/feature/:featureId',
+  featureRouter.feature_id_get
+)
+
 // Create feature: POST
 router.post(
   '/:userId/project/:projId/feature/create',
@@ -39,4 +45,4 @@ router.post(
 
 module.exports = router
 
-// TODO: BETTER ROUTES
+// TODO: BETTER ROUTES!!!!!
