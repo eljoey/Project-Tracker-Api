@@ -2,6 +2,22 @@ const Feature = require('../../../models/feature')
 const Project = require('../../../models/project')
 const User = require('../../../models/user')
 
+exports.features_get = async (req, res, next) => {
+  const projectId = req.params.projId
+
+  try {
+    const features = await Feature.find({
+      project: {
+        _id: projectId
+      }
+    })
+
+    res.send(features)
+  } catch (err) {
+    next(err)
+  }
+}
+
 exports.feature_create_post = async (req, res, next) => {
   const body = req.body
   const userId = req.params.userId

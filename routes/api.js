@@ -25,6 +25,9 @@ router.post(
   projectRouter.project_delete_post
 )
 
+// Find all features in Project: GET
+router.get('/:userId/project/:projId/features', featureRouter.features_get)
+
 // Create feature: POST
 router.post(
   '/:userId/project/:projId/feature/create',
