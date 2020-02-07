@@ -1,6 +1,22 @@
 const Project = require('../../../models/project')
 const User = require('../../../models/user')
 
+exports.projects_get = async (req, res, next) => {
+  const userId = req.params.userId
+
+  try {
+    const projects = await Project.find({
+      members: {
+        _id: userId
+      }
+    })
+
+    res.send(projects)
+  } catch (err) {
+    next(err)
+  }
+}
+
 exports.project_id_get = async (req, res, next) => {
   const projectId = req.params.projId
 

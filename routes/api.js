@@ -13,7 +13,10 @@ router.post('/user/create', userRouter.user_create_post)
 // Find user: GET
 router.get('/:userId', userRouter.user_id_get)
 
-// Find project: GET
+// Find all users projects: Get
+router.get('/:userId/projects', projectRouter.projects_get)
+
+// Find project by ID: GET
 router.get('/:userId/project/:projId', projectRouter.project_id_get)
 
 // Create project: POST
