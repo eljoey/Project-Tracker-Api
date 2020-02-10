@@ -41,7 +41,7 @@ exports.feature_create_post = async (req, res, next) => {
 
     const createdFeature = new Feature({
       name: body.name,
-      details: body.details,
+      description: body.description,
       project,
       createdBy: user,
       created: Date.now()

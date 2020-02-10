@@ -4,7 +4,8 @@ const router = express.Router()
 const {
   userRouter,
   projectRouter,
-  featureRouter
+  featureRouter,
+  bugRouter
 } = require('./controllers/index')
 
 // Create user: POST
@@ -42,6 +43,13 @@ router.post(
   '/:userId/project/:projId/feature/create',
   featureRouter.feature_create_post
 )
+
+// Find all bugs in Project: GET
+router.get('/:userId/project/:projId/bugs', bugRouter.bugs_get)
+// find single bug by ID: GET
+router.get('/:userId/project/:projId/bug/:bugId', bugRouter.bug_id_get)
+// Create Bug: POST
+router.post('/:userId/project/:projId/bug/create', bugRouter.bug_create_post)
 
 module.exports = router
 

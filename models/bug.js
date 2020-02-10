@@ -7,7 +7,7 @@ const bugSchema = new Schema({
     type: String,
     required: true
   },
-  details: {
+  description: {
     type: String,
     required: true
   },
@@ -29,7 +29,8 @@ const bugSchema = new Schema({
   comments: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Comment'
+      ref: 'Comment',
+      required: true
     }
   ]
 })
