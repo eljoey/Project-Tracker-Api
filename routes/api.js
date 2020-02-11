@@ -5,14 +5,26 @@ const {
   userRouter,
   projectRouter,
   featureRouter,
-  bugRouter
+  bugRouter,
+  commentRouter
 } = require('./controllers/index')
+
+//////////////////////////////////////
+/////////////// USER /////////////////
+//////////////////////////////////////
 
 // Create user: POST
 router.post('/user/create', userRouter.user_create_post)
 
 // Find user: GET
 router.get('/:userId', userRouter.user_id_get)
+
+// Update user: POST
+router.post('/:userId/update', userRouter.user_update_post)
+
+//////////////////////////////////////////
+/////////////// PROJECTS /////////////////
+//////////////////////////////////////////
 
 // Find all users projects: Get
 router.get('/:userId/projects', projectRouter.projects_get)
@@ -28,6 +40,9 @@ router.post(
   '/:userId/project/delete/:projId',
   projectRouter.project_delete_post
 )
+//////////////////////////////////////////
+/////////////// FEATURES /////////////////
+//////////////////////////////////////////
 
 // Find all features in Project: GET
 router.get('/:userId/project/:projId/features', featureRouter.features_get)
@@ -44,12 +59,28 @@ router.post(
   featureRouter.feature_create_post
 )
 
+//////////////////////////////////////
+/////////////// BUGS /////////////////
+//////////////////////////////////////
+
 // Find all bugs in Project: GET
 router.get('/:userId/project/:projId/bugs', bugRouter.bugs_get)
+
 // find single bug by ID: GET
 router.get('/:userId/project/:projId/bug/:bugId', bugRouter.bug_id_get)
+
 // Create Bug: POST
 router.post('/:userId/project/:projId/bug/create', bugRouter.bug_create_post)
+
+//////////////////////////////////////////
+/////////////// COMMENTS /////////////////
+//////////////////////////////////////////
+
+// Create Comment: POST
+router.post(
+  '/:userId/:type/:typeId/comment/create',
+  commentRouter.comment_create_post
+)
 
 module.exports = router
 
