@@ -37,8 +37,14 @@ router.post('/:userId/project/create', projectRouter.project_create_post)
 
 // Delete project: POST
 router.post(
-  '/:userId/project/delete/:projId',
+  '/:userId/project/:projId/delete',
   projectRouter.project_delete_post
+)
+
+// Update project: POST
+router.post(
+  '/:userId/project/:projId/update',
+  projectRouter.project_update_post
 )
 //////////////////////////////////////////
 /////////////// FEATURES /////////////////

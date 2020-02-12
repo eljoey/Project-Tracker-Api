@@ -65,6 +65,37 @@ exports.project_create_post = async (req, res, next) => {
   }
 }
 
+exports.project_update_post = async (req, res, next) => {
+  const body = req.body
+  const projId = req.params.projId
+  const userId = req.params.userId
+
+  try {
+    const project = await Project.findById(projId)
+
+    // Check if Admin of Project (Only Admin can delete)
+    if (userId !== project.admin._id.toString()) {
+      return res.json({ error: 'Only the admin can update the project' })
+    }
+
+    const updatedProject = new Project({
+      ...project.toObject(),
+      name: body.name,
+      description: body.description
+    })
+
+    const savedProject = await Project.findByIdAndUpdate(
+      projId,
+      updatedProject,
+      { new: true }
+    )
+
+    res.json(savedProject)
+  } catch (err) {
+    next(err)
+  }
+}
+
 exports.project_delete_post = async (req, res, next) => {
   const userId = req.params.userId
   const projectId = req.params.projId

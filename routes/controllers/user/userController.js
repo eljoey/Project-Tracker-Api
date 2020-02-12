@@ -46,6 +46,8 @@ exports.user_create_post = async (req, res, next) => {
 
 exports.user_update_post = async (req, res, next) => {
   // TODO: Implement changing password.
+  // TODO: Implement measure making sure only logged in user can change itself.
+  //       Not that a logged in user can change any user if they know their ID.
 
   const body = req.body
   const userId = req.params.userId
