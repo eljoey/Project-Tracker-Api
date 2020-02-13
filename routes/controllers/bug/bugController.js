@@ -52,3 +52,26 @@ exports.bug_create_post = async (req, res, next) => {
     next(err)
   }
 }
+
+exports.bug_update_post = async (req, res, next) => {
+  const body = req.body
+  const bugId = req.params.bugId
+
+  try {
+    const bug = await Bug.findById(bugId)
+
+    const updatedBug = new Bug({
+      ...bug.toObject(),
+      name: body.name,
+      description: bug.description
+    })
+
+    const savedBug = await Bug.findByIdAndUpdate(bugId, updatedBug, {
+      new: true
+    })
+
+    res.json(savedBug)
+  } catch (err) {
+    next(err)
+  }
+}

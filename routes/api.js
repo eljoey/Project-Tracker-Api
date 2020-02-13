@@ -84,6 +84,12 @@ router.get('/:userId/project/:projId/bug/:bugId', bugRouter.bug_id_get)
 // Create Bug: POST
 router.post('/:userId/project/:projId/bug/create', bugRouter.bug_create_post)
 
+// Update Bug: POST
+router.post(
+  '/:userId/project/:projId/bug/:bugId/update',
+  bugRouter.bug_update_post
+)
+
 //////////////////////////////////////////
 /////////////// COMMENTS /////////////////
 //////////////////////////////////////////
