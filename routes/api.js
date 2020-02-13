@@ -100,6 +100,12 @@ router.post(
   commentRouter.comment_create_post
 )
 
+// Update Comment: POST
+router.post(
+  '/:userId/:type/:typeId/comment/:commentId/update',
+  commentRouter.comment_update_post
+)
+
 module.exports = router
 
 // TODO: BETTER ROUTES!!!!!

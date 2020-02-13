@@ -36,3 +36,27 @@ exports.comment_create_post = async (req, res, next) => {
     next(err)
   }
 }
+
+exports.comment_update_post = async (req, res, next) => {
+  const body = req.body
+  const commentId = req.params.commentId
+
+  try {
+    const comment = await Comment.findById(commentId)
+
+    const updatedComment = new Comment({
+      ...comment.toObject(),
+      content: body.content
+    })
+
+    const savedComment = await Comment.findByIdAndUpdate(
+      commentId,
+      updatedComment,
+      { new: true }
+    )
+
+    res.json(savedComment)
+  } catch (err) {
+    next(err)
+  }
+}
