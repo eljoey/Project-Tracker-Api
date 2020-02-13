@@ -38,6 +38,8 @@ exports.comment_create_post = async (req, res, next) => {
 }
 
 exports.comment_update_post = async (req, res, next) => {
+  // TODO: Restrict update access to only the original commenter
+
   const body = req.body
   const commentId = req.params.commentId
 

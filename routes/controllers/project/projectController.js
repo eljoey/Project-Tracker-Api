@@ -73,7 +73,7 @@ exports.project_update_post = async (req, res, next) => {
   try {
     const project = await Project.findById(projId)
 
-    // Check if Admin of Project (Only Admin can delete)
+    // Check if Admin of Project (Only Admin can update)
     if (userId !== project.admin._id.toString()) {
       return res.json({ error: 'Only the admin can update the project' })
     }
