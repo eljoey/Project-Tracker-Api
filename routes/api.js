@@ -65,6 +65,12 @@ router.post(
   featureRouter.feature_create_post
 )
 
+// Update Feature: POST
+router.post(
+  '/:userId/project/:projId/feature/:featureId/update',
+  featureRouter.feature_update_post
+)
+
 //////////////////////////////////////
 /////////////// BUGS /////////////////
 //////////////////////////////////////

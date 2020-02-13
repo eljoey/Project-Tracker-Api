@@ -56,3 +56,28 @@ exports.feature_create_post = async (req, res, next) => {
     next(err)
   }
 }
+
+exports.feature_update_post = async (req, res, next) => {
+  const body = req.body
+  const featureId = req.params.featureId
+
+  try {
+    const feature = await Feature.findById(featureId)
+
+    const updatedFeature = new Feature({
+      ...feature.toObject(),
+      name: body.name,
+      description: body.description
+    })
+
+    const savedFeature = await Feature.findByIdAndUpdate(
+      featureId,
+      updatedFeature,
+      { new: true }
+    )
+
+    res.json(savedFeature)
+  } catch (err) {
+    next(err)
+  }
+}
