@@ -62,3 +62,42 @@ exports.comment_update_post = async (req, res, next) => {
     next(err)
   }
 }
+
+exports.comment_delete_post = async (req, res, next) => {
+  // TODO: Determine if user is allowed to delete
+
+  const commentId = req.params.commentId
+  const type = req.params.type
+  const typeId = req.params.typeId
+
+  // Determines whether if type is a 'bug' or 'feature'
+  let determinedType
+  if (type === 'bugs') {
+    determinedType = Bug
+  } else {
+    determinedType = Feature
+  }
+
+  try {
+    const foundType = await determinedType.findById(typeId).populate('comments')
+
+    console.log(foundType.comments)
+    const filteredComments = foundType.comments.filter(
+      comment => comment._id.toString() !== commentId
+    )
+
+    const updatedType = new determinedType({
+      ...foundType.toObject(),
+      comments: filteredComments
+    })
+    console.log(updatedType)
+    // Delete Comment
+    await Comment.findByIdAndRemove(commentId)
+    // Update the 'type' (bug or feature) with deleted comment
+    await determinedType.findByIdAndUpdate(typeId, updatedType, { new: true })
+
+    res.json({ msg: 'Comment Deleted' })
+  } catch (err) {
+    next(err)
+  }
+}

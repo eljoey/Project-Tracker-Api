@@ -106,6 +106,12 @@ router.post(
   commentRouter.comment_update_post
 )
 
+// Delete Comment: POST
+router.post(
+  '/:userId/:type/:typeId/comment/:commentId/delete',
+  commentRouter.comment_delete_post
+)
+
 module.exports = router
 
 // TODO: BETTER ROUTES!!!!!
