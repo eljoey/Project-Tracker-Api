@@ -71,6 +71,12 @@ router.post(
   featureRouter.feature_update_post
 )
 
+// Delete Feature: POST
+router.post(
+  '/:userId/project/:projId/feature/:featureId/delete',
+  featureRouter.feature_delete_post
+)
+
 //////////////////////////////////////
 /////////////// BUGS /////////////////
 //////////////////////////////////////

@@ -81,3 +81,30 @@ exports.feature_update_post = async (req, res, next) => {
     next(err)
   }
 }
+
+exports.feature_delete_post = async (req, res, next) => {
+  // TODO: Make it so only members of project can delete
+
+  const projId = req.params.projId
+  const featureId = req.params.featureId
+
+  try {
+    const project = await Project.findById(projId)
+
+    const filteredFeatures = project.features.filter(
+      feature => feature._id.toString() !== featureId
+    )
+
+    const updatedProject = new Project({
+      ...project.toObject(),
+      features: filteredFeatures
+    })
+
+    await Feature.findByIdAndRemove(featureId)
+    await Project.findByIdAndUpdate(projId, updatedProject, { new: true })
+
+    res.send({ msg: 'Feature deleted' })
+  } catch (err) {
+    next(err)
+  }
+}
