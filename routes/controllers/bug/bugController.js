@@ -75,3 +75,30 @@ exports.bug_update_post = async (req, res, next) => {
     next(err)
   }
 }
+
+exports.bug_delete_post = async (req, res, next) => {
+  // TODO: Make it so only members of project can delete
+
+  const projId = req.params.projId
+  const bugId = req.params.bugId
+
+  try {
+    const project = await Project.findById(projId)
+
+    const filteredBugs = project.bugs.filter(
+      bug => bug._id.toString() !== bugId
+    )
+
+    const updatedProject = new Project({
+      ...project.toObject(),
+      bugs: filteredBugs
+    })
+
+    await Bug.findByIdAndRemove(bugId)
+    await Project.findByIdAndUpdate(projId, updatedProject, { new: true })
+
+    res.send({ msg: 'Bug deleted' })
+  } catch (err) {
+    next(err)
+  }
+}

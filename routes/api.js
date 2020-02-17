@@ -90,6 +90,12 @@ router.post(
   bugRouter.bug_update_post
 )
 
+// Delete Bug: POST
+router.post(
+  '/:userId/project/:projId/bug/:bugId/delete',
+  bugRouter.bug_delete_post
+)
+
 //////////////////////////////////////////
 /////////////// COMMENTS /////////////////
 //////////////////////////////////////////
