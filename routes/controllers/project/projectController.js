@@ -114,6 +114,7 @@ exports.project_delete_post = async (req, res, next) => {
 
     const arrBugIds = project.bugs.map(bug => bug._id)
     const arrFeatureIds = project.features.map(feature => feature._id)
+    // Grab all the comment Id's from each Bug and Feature then merge into a single array
     const arrBugCommentIds = project.bugs
       .map(bug => bug.comments.map(comment => comment._id))
       .flat()
@@ -121,7 +122,6 @@ exports.project_delete_post = async (req, res, next) => {
     const arrFeatureCommentIds = project.features
       .map(feature => feature.comments.map(comment => comment._id))
       .flat()
-
     let commentIds = [...arrBugCommentIds, ...arrFeatureCommentIds]
 
     await Comment.deleteMany()
