@@ -1,5 +1,8 @@
 const Project = require('../../../models/project')
+const Bug = require('../../../models/bug')
+const Feature = require('../../../models/feature')
 const User = require('../../../models/user')
+const Comment = require('../../../models/comment')
 
 exports.projects_get = async (req, res, next) => {
   const userId = req.params.userId
@@ -100,5 +103,53 @@ exports.project_delete_post = async (req, res, next) => {
   const userId = req.params.userId
   const projectId = req.params.projId
 
-  // TODO
+  try {
+    const project = await Project.findById(projectId)
+      .populate('bugs')
+      .populate('features')
+    // Check if Admin of Project (Only Admin can delete)
+    if (userId !== project.admin._id.toString()) {
+      return res.json({ error: 'Only the admin can delete the project' })
+    }
+
+    const arrBugIds = project.bugs.map(bug => bug._id)
+    const arrFeatureIds = project.features.map(feature => feature._id)
+    const arrBugCommentIds = project.bugs
+      .map(bug => bug.comments.map(comment => comment._id))
+      .flat()
+
+    const arrFeatureCommentIds = project.features
+      .map(feature => feature.comments.map(comment => comment._id))
+      .flat()
+
+    let commentIds = [...arrBugCommentIds, ...arrFeatureCommentIds]
+
+    await Comment.deleteMany()
+      .where('_id')
+      .in(commentIds)
+    await Bug.deleteMany()
+      .where('_id')
+      .in(arrBugIds)
+    await Feature.deleteMany()
+      .where('_id')
+      .in(arrFeatureIds)
+    await Project.findByIdAndRemove(projectId)
+
+    const user = await User.findById(userId)
+
+    const filteredProjects = user.projects.filter(
+      proj => proj._id.toString() !== projectId
+    )
+
+    const updatedUser = new User({
+      ...user.toObject(),
+      projects: filteredProjects
+    })
+
+    await User.findByIdAndUpdate(userId, updatedUser, { new: true })
+
+    res.send({ msg: 'Project Deleted' })
+  } catch (err) {
+    next(err)
+  }
 }

@@ -46,6 +46,13 @@ router.post(
   '/:userId/project/:projId/update',
   projectRouter.project_update_post
 )
+
+// Delete project: POST
+router.post(
+  '/:userId/project/:projId/delete',
+  projectRouter.project_delete_post
+)
+
 //////////////////////////////////////////
 /////////////// FEATURES /////////////////
 //////////////////////////////////////////

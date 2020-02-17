@@ -20,6 +20,12 @@ exports.comment_create_post = async (req, res, next) => {
       typeFound = await Feature.findById(typeId)
     }
 
+    if (!typeFound) {
+      return res.json({
+        error: 'Could not find Bug or Feature.  Make sure the ID is correct'
+      })
+    }
+
     const comment = new Comment({
       user,
       content: body.content,
@@ -90,7 +96,6 @@ exports.comment_delete_post = async (req, res, next) => {
       ...foundType.toObject(),
       comments: filteredComments
     })
-    console.log(updatedType)
     // Delete Comment
     await Comment.findByIdAndRemove(commentId)
     // Update the 'type' (bug or feature) with deleted comment
