@@ -38,7 +38,6 @@ exports.comment_create_post = async (req, res, next) => {
     typeFound.comments = typeFound.comments.concat(savedComment)
     await typeFound.save()
 
-    // TODO: TRIM WHAT INFO IS SENT. (PASSWORDHASH IS A NONO)
     res.json(savedComment)
   } catch (err) {
     next(err)
@@ -89,7 +88,6 @@ exports.comment_delete_post = async (req, res, next) => {
   try {
     const foundType = await determinedType.findById(typeId).populate('comments')
 
-    console.log(foundType.comments)
     const filteredComments = foundType.comments.filter(
       comment => comment._id.toString() !== commentId
     )
