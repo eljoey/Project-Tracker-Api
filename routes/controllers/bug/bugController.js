@@ -29,7 +29,7 @@ exports.bug_id_get = async (req, res, next) => {
 exports.bug_create_post = async (req, res, next) => {
   const body = req.body
   const projId = req.params.projId
-  const userId = req.params.userId
+  const userId = req.decodedToken.id
 
   try {
     const user = await User.findById(userId)
@@ -54,6 +54,8 @@ exports.bug_create_post = async (req, res, next) => {
 }
 
 exports.bug_update_post = async (req, res, next) => {
+  // TODO: Make only members of project able to update
+
   const body = req.body
   const bugId = req.params.bugId
 

@@ -2,7 +2,7 @@ const User = require('../../../models/user')
 const bcrypt = require('bcrypt')
 
 exports.user_id_get = async (req, res, next) => {
-  const userId = req.params.userId
+  const userId = req.decodedToken.id
 
   try {
     const userInfo = await User.findById(userId).populate('projects')
@@ -46,11 +46,9 @@ exports.user_create_post = async (req, res, next) => {
 
 exports.user_update_post = async (req, res, next) => {
   // TODO: Implement changing password.
-  // TODO: Implement measure making sure only logged in user can change itself.
-  //       Not that a logged in user can change any user if they know their ID.
 
   const body = req.body
-  const userId = req.params.userId
+  const userId = req.decodedToken.id
 
   try {
     const user = await User.findById(userId)

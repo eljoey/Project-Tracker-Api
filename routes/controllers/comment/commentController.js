@@ -4,8 +4,10 @@ const Bug = require('../../../models/bug')
 const Feature = require('../../../models/feature')
 
 exports.comment_create_post = async (req, res, next) => {
+  // TODO: Make it so only members of project can comment
+
   const body = req.body
-  const userId = req.params.userId
+  const userId = req.decodedToken.id
   const type = req.params.type
   const typeId = req.params.typeId
 
@@ -70,7 +72,7 @@ exports.comment_update_post = async (req, res, next) => {
 }
 
 exports.comment_delete_post = async (req, res, next) => {
-  // TODO: Determine if user is allowed to delete
+  // TODO: Determine if user is allowed to delete (admin or original user)
 
   const commentId = req.params.commentId
   const type = req.params.type

@@ -32,7 +32,7 @@ exports.feature_id_get = async (req, res, next) => {
 
 exports.feature_create_post = async (req, res, next) => {
   const body = req.body
-  const userId = req.params.userId
+  const userId = req.decodedToken.id
   const projectId = req.params.projId
 
   try {

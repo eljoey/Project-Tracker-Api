@@ -5,7 +5,7 @@ const User = require('../../../models/user')
 const Comment = require('../../../models/comment')
 
 exports.projects_get = async (req, res, next) => {
-  const userId = req.params.userId
+  const userId = req.decodedToken.id
 
   try {
     const projects = await Project.find({
@@ -38,7 +38,7 @@ exports.project_id_get = async (req, res, next) => {
 
 exports.project_create_post = async (req, res, next) => {
   const body = req.body
-  const userId = req.params.userId
+  const userId = req.decodedToken.id
 
   try {
     const user = await User.findById(userId)
@@ -74,7 +74,7 @@ exports.project_create_post = async (req, res, next) => {
 exports.project_update_post = async (req, res, next) => {
   const body = req.body
   const projId = req.params.projId
-  const userId = req.params.userId
+  const userId = req.decodedToken.id
 
   try {
     const project = await Project.findById(projId)
@@ -103,13 +103,14 @@ exports.project_update_post = async (req, res, next) => {
 }
 
 exports.project_delete_post = async (req, res, next) => {
-  const userId = req.params.userId
+  const userId = req.decodedToken.id
   const projectId = req.params.projId
 
   try {
     const project = await Project.findById(projectId)
       .populate('bugs')
       .populate('features')
+
     // Check if Admin of Project (Only Admin can delete)
     if (userId !== project.admin._id.toString()) {
       return res.json({ error: 'Only the admin can delete the project' })
