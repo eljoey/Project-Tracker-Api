@@ -7,7 +7,7 @@ const User = require('../models/user')
 
 router.post('/', async (req, res, next) => {
   const body = req.body
-  const user = await User.findOne({ username: body.username })
+  const user = await User.findOne({ username: body.username }, '+passwordHash')
   const passwordCorrect =
     user === null
       ? false

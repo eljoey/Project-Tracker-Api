@@ -20,7 +20,8 @@ const userSchema = new Schema({
   },
   passwordHash: {
     type: String,
-    required: true
+    required: true,
+    select: false
   },
   created: {
     type: Date,

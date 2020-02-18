@@ -32,9 +32,10 @@ mongoose
 app.use(cors())
 app.use(bodyParser.json())
 app.use(middleware.requestLogger)
+app.use(middleware.getToken)
 
 app.use('/login', loginRouter)
-app.use('/api', apiRouter)
+app.use('/api', middleware.verifyToken, apiRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

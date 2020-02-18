@@ -46,9 +46,12 @@ exports.project_create_post = async (req, res, next) => {
     // TODO: Implement something that identifies a username that was not found.
     // Or possibly have a list of all users on frontend(this is probably a bad idea)
 
-    const members = await User.find({
-      username: body.memberUsernames
-    })
+    const members = await User.find(
+      {
+        username: body.memberUsernames
+      },
+      'username firstName lastName'
+    )
 
     const newProject = new Project({
       name: body.name,
@@ -62,7 +65,7 @@ exports.project_create_post = async (req, res, next) => {
     user.projects = user.projects.concat(savedProject)
     await user.save()
 
-    res.send(savedProject)
+    res.send(newProject)
   } catch (err) {
     next(err)
   }
@@ -118,7 +121,6 @@ exports.project_delete_post = async (req, res, next) => {
     const arrBugCommentIds = project.bugs
       .map(bug => bug.comments.map(comment => comment._id))
       .flat()
-
     const arrFeatureCommentIds = project.features
       .map(feature => feature.comments.map(comment => comment._id))
       .flat()
