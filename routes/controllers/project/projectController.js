@@ -72,22 +72,38 @@ exports.project_create_post = async (req, res, next) => {
 }
 
 exports.project_update_post = async (req, res, next) => {
+  // TODO: Handle not finding user here or on frontend
+
   const body = req.body
   const projId = req.params.projId
   const userId = req.decodedToken.id
 
   try {
-    const project = await Project.findById(projId)
+    const project = await Project.findById(projId).populate('members')
 
     // Check if Admin of Project (Only Admin can update)
     if (userId !== project.admin._id.toString()) {
       return res.json({ error: 'Only the admin can update the project' })
     }
 
+    // Check if adding members
+    let foundMembers = []
+    if (body.memberUsernames) {
+      foundMembers = await User.find({
+        username: body.memberUsernames
+      })
+    }
+    // Create new members array and removes duplicates (Only worked when turning into JSON)
+    const newMembers = project.members.concat(foundMembers)
+    const membersJSON = newMembers.map(JSON.stringify)
+    const filteredMembers = new Set(membersJSON)
+    const arrMembers = Array.from(filteredMembers).map(JSON.parse)
+
     const updatedProject = new Project({
       ...project.toObject(),
       name: body.name,
-      description: body.description
+      description: body.description,
+      members: arrMembers
     })
 
     const savedProject = await Project.findByIdAndUpdate(
