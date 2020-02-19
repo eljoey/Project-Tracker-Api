@@ -13,9 +13,6 @@ const {
 /////////////// USER /////////////////
 //////////////////////////////////////
 
-// Create user: POST
-router.post('/user/create', userRouter.user_create_post)
-
 // Find user: GET
 router.get('/user', userRouter.user_id_get)
 
