@@ -87,11 +87,11 @@ exports.comment_update_post = async (req, res, next) => {
 }
 
 exports.comment_delete_post = async (req, res, next) => {
-  // TODO: Determine if user is allowed to delete (admin or original user)
-
   const commentId = req.params.commentId
   const type = req.params.type
   const typeId = req.params.typeId
+  const projId = req.params.projId
+  const userId = req.decodedToken.id
 
   // Determines whether if type is a 'bug' or 'feature'
   let determinedType
@@ -102,6 +102,18 @@ exports.comment_delete_post = async (req, res, next) => {
   }
 
   try {
+    const project = await Project.findById(projId)
+    const comment = await Comment.findById(commentId)
+
+    // Determine if user is allowed to delete (admin or original user)
+    const adminCheck = project.admin.toString() === userId
+    const commenterCheck = comment.user.toString() === userId
+    if (!adminCheck || !commenterCheck) {
+      return res.json({
+        error: 'Must be Admin of project or original commentor to delete.'
+      })
+    }
+
     const foundType = await determinedType.findById(typeId).populate('comments')
 
     const filteredComments = foundType.comments.filter(
