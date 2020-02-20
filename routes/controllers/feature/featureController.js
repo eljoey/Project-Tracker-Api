@@ -83,13 +83,17 @@ exports.feature_update_post = async (req, res, next) => {
 }
 
 exports.feature_delete_post = async (req, res, next) => {
-  // TODO: Make it so only members of project can delete
-
   const projId = req.params.projId
   const featureId = req.params.featureId
+  const userId = req.decodedToken.id
 
   try {
     const project = await Project.findById(projId)
+
+    // Check if Admin of Project (Only Admin can delete)
+    if (userId !== project.admin._id.toString()) {
+      return res.json({ error: 'Only the admin can delete the project' })
+    }
 
     const filteredFeatures = project.features.filter(
       feature => feature._id.toString() !== featureId

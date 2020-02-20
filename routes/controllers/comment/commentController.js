@@ -2,17 +2,30 @@ const Comment = require('../../../models/comment')
 const User = require('../../../models/user')
 const Bug = require('../../../models/bug')
 const Feature = require('../../../models/feature')
+const Project = require('../../../models/project')
 
 exports.comment_create_post = async (req, res, next) => {
-  // TODO: Make it so only members of project can comment
-
   const body = req.body
   const userId = req.decodedToken.id
   const type = req.params.type
   const typeId = req.params.typeId
+  const projId = req.params.projId
 
   try {
     const user = await User.findById(userId)
+    const project = await Project.findById(projId)
+
+    // Check if (type) is part of project
+    if (project[type].indexOf(typeId) === -1) {
+      return res.json({
+        error: 'Could not find bug or feature in the given project'
+      })
+    }
+
+    // Check if user is a member of the project
+    if (project.members.indexOf(userId) === -1) {
+      return res.json({ error: 'Must be a project member to comment' })
+    }
 
     // Determines whether adding a comment to 'bugs' or 'features'
     let typeFound

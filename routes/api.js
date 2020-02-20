@@ -90,17 +90,20 @@ router.post('/project/:projId/bug/:bugId/delete', bugRouter.bug_delete_post)
 //////////////////////////////////////////
 
 // Create Comment: POST
-router.post('/:type/:typeId/comment/create', commentRouter.comment_create_post)
+router.post(
+  '/project/:projId/:type/:typeId/comment/create',
+  commentRouter.comment_create_post
+)
 
 // Update Comment: POST
 router.post(
-  '/:type/:typeId/comment/:commentId/update',
+  '/project/:projId/:type/:typeId/comment/:commentId/update',
   commentRouter.comment_update_post
 )
 
 // Delete Comment: POST
 router.post(
-  '/:type/:typeId/comment/:commentId/delete',
+  '/project/:projId/:type/:typeId/comment/:commentId/delete',
   commentRouter.comment_delete_post
 )
 
