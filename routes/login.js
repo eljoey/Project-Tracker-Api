@@ -5,8 +5,6 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
 
-const { userRouter } = require('./controllers/index')
-
 // login
 router.post('/', async (req, res, next) => {
   const body = req.body
@@ -31,8 +29,5 @@ router.post('/', async (req, res, next) => {
 
   res.status(200).send({ token })
 })
-
-// Create user: POST
-router.post('/user/create', userRouter.user_create_post)
 
 module.exports = router

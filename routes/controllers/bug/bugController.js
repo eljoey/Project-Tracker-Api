@@ -35,6 +35,11 @@ exports.bug_create_post = async (req, res, next) => {
     const user = await User.findById(userId)
     const project = await Project.findById(projId)
 
+    // Check if user is a member of the project
+    if (project.members.indexOf(userId) === -1) {
+      return res.json({ error: 'Must be a project member' })
+    }
+
     const createdBug = new Bug({
       name: body.name,
       description: body.description,
@@ -54,13 +59,16 @@ exports.bug_create_post = async (req, res, next) => {
 }
 
 exports.bug_update_post = async (req, res, next) => {
-  // TODO: Make only members of project able to update
-
   const body = req.body
   const bugId = req.params.bugId
 
   try {
     const bug = await Bug.findById(bugId)
+
+    // Check if user is a member of the project
+    if (project.members.indexOf(userId) === -1) {
+      return res.json({ error: 'Must be a project member' })
+    }
 
     const updatedBug = new Bug({
       ...bug.toObject(),
@@ -79,13 +87,16 @@ exports.bug_update_post = async (req, res, next) => {
 }
 
 exports.bug_delete_post = async (req, res, next) => {
-  // TODO: Make it so only members of project can delete
-
   const projId = req.params.projId
   const bugId = req.params.bugId
 
   try {
     const project = await Project.findById(projId)
+
+    // Check if Admin of Project (Only Admin can delete)
+    if (userId !== project.admin._id.toString()) {
+      return res.json({ error: 'Only the admin can delete the bug' })
+    }
 
     const filteredBugs = project.bugs.filter(
       bug => bug._id.toString() !== bugId

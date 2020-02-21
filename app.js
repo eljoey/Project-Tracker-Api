@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 
 const apiRouter = require('./routes/api')
 const loginRouter = require('./routes/login')
+const registerRouter = require('./routes/register')
 
 const app = express()
 
@@ -34,6 +35,7 @@ app.use(bodyParser.json())
 app.use(middleware.requestLogger)
 app.use(middleware.getToken)
 
+app.use('/register', registerRouter)
 app.use('/login', loginRouter)
 app.use('/api', middleware.verifyToken, apiRouter)
 
