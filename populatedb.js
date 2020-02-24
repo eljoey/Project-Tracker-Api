@@ -434,20 +434,23 @@ const updateUsersDB = cb => {
 }
 
 const updateProjectDB = cb => {
-  async.parallel([
-    async function(callback) {
-      await updateProject(projects[0]._id, 0, 0)
-    },
-    async function(callback) {
-      await updateProject(projects[1]._id, 1, 1)
-    },
-    async function(callback) {
-      await updateProject(projects[2]._id, 2, 2)
-    },
-    async function(callback) {
-      await updateProject(projects[3]._id, 3, 3)
-    }
-  ])
+  async.parallel(
+    [
+      async function(callback) {
+        await updateProject(projects[0]._id, 0, 0)
+      },
+      async function(callback) {
+        await updateProject(projects[1]._id, 1, 1)
+      },
+      async function(callback) {
+        await updateProject(projects[2]._id, 2, 2)
+      },
+      async function(callback) {
+        await updateProject(projects[3]._id, 3, 3)
+      }
+    ],
+    cb
+  )
 }
 
 async.series(
@@ -457,7 +460,8 @@ async.series(
     createProjects,
     createFeatures,
     createBugs,
-    updateUsersDB
+    updateUsersDB,
+    updateProjectDB
   ],
   function(err, results) {
     if (err) {
