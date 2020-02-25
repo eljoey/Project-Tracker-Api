@@ -4,12 +4,15 @@ const config = require('./utils/config')
 const middleware = require('./utils/middleware')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const helmet = require('helmet')
 
 const apiRouter = require('./routes/api')
 const loginRouter = require('./routes/login')
 const registerRouter = require('./routes/register')
 
 const app = express()
+
+app.use(helmet())
 
 const mongoose = require('mongoose')
 const mongoDB = config.MONGODB_URI
