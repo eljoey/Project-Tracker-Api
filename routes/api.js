@@ -89,6 +89,12 @@ router.post('/project/:projId/bug/:bugId/delete', bugRouter.bug_delete_post)
 /////////////// COMMENTS /////////////////
 //////////////////////////////////////////
 
+// Get Comments: Get
+router.get(
+  '/project/:projId/:type/:typeId/comments',
+  commentRouter.comments_get
+)
+
 // Create Comment: POST
 router.post(
   '/project/:projId/:type/:typeId/comment/create',

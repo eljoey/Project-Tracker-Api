@@ -4,6 +4,42 @@ const Bug = require('../../../models/bug')
 const Feature = require('../../../models/feature')
 const Project = require('../../../models/project')
 
+exports.comments_get = async (req, res, next) => {
+  const projId = req.params.projId
+  const type = req.params.type
+  const typeId = req.params.typeId
+  const userId = req.decodedToken.id
+
+  try {
+    const user = await User.findById(userId)
+    const project = await Project.findById(projId)
+
+    // Check if (type) is part of project
+    if (project[type].indexOf(typeId) === -1) {
+      return res.json({
+        error: 'Could not find bug or feature in the given project'
+      })
+    }
+
+    // Check if user is a member of the project
+    if (project.members.indexOf(userId) === -1) {
+      return res.json({ error: 'Must be a project member to see comments' })
+    }
+
+    // Determines whether 'bug' or 'feature'
+    let typeFound
+    if (type === 'bugs') {
+      typeFound = await Bug.findById(typeId).populate('comments')
+    } else {
+      typeFound = await Feature.findById(typeId).populate('comments')
+    }
+
+    res.send(typeFound.comments)
+  } catch (err) {
+    next(err)
+  }
+}
+
 exports.comment_create_post = async (req, res, next) => {
   const body = req.body
   const userId = req.decodedToken.id
