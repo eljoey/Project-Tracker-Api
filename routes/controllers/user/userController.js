@@ -1,5 +1,6 @@
 const User = require('../../../models/user')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 exports.user_id_get = async (req, res, next) => {
   const userId = req.decodedToken.id
@@ -38,7 +39,20 @@ exports.user_create_post = async (req, res, next) => {
     })
 
     const savedUser = await user.save()
-    res.json(savedUser)
+
+    const tokenForUser = {
+      username: savedUser.username,
+      id: savedUser._id
+    }
+
+    const token = jwt.sign(tokenForUser, process.env.SECRET)
+
+    res.status(200).json({
+      token,
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName
+    })
   } catch (err) {
     next(err)
   }
