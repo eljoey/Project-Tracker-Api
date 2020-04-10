@@ -17,7 +17,7 @@ exports.comments_get = async (req, res, next) => {
     // Check if (type) is part of project
     if (project[type].indexOf(typeId) === -1) {
       return res.json({
-        error: 'Could not find bug or feature in the given project'
+        error: 'Could not find bug or feature in the given project',
       })
     }
 
@@ -29,9 +29,21 @@ exports.comments_get = async (req, res, next) => {
     // Determines whether 'bug' or 'feature'
     let typeFound
     if (type === 'bugs') {
-      typeFound = await Bug.findById(typeId).populate('comments')
+      typeFound = await Bug.findById(typeId).populate({
+        path: 'comments',
+        populate: {
+          path: 'user',
+          select: ['_id', 'username'],
+        },
+      })
     } else {
-      typeFound = await Feature.findById(typeId).populate('comments')
+      typeFound = await Feature.findById(typeId).populate({
+        path: 'comments',
+        populate: {
+          path: 'user',
+          select: ['_id', 'username'],
+        },
+      })
     }
 
     res.send(typeFound.comments)
@@ -54,7 +66,7 @@ exports.comment_create_post = async (req, res, next) => {
     // Check if (type) is part of project
     if (project[type].indexOf(typeId) === -1) {
       return res.json({
-        error: 'Could not find bug or feature in the given project'
+        error: 'Could not find bug or feature in the given project',
       })
     }
 
@@ -73,14 +85,14 @@ exports.comment_create_post = async (req, res, next) => {
 
     if (!typeFound) {
       return res.json({
-        error: 'Could not find Bug or Feature.  Make sure the ID is correct'
+        error: 'Could not find Bug or Feature.  Make sure the ID is correct',
       })
     }
 
     const comment = new Comment({
       user,
       content: body.content,
-      created: Date.now()
+      created: Date.now(),
     })
 
     const savedComment = await comment.save()
@@ -107,7 +119,7 @@ exports.comment_update_post = async (req, res, next) => {
 
     const updatedComment = new Comment({
       ...comment.toObject(),
-      content: body.content
+      content: body.content,
     })
 
     const savedComment = await Comment.findByIdAndUpdate(
@@ -146,19 +158,19 @@ exports.comment_delete_post = async (req, res, next) => {
     const commenterCheck = comment.user.toString() === userId
     if (!adminCheck || !commenterCheck) {
       return res.json({
-        error: 'Must be Admin of project or original commentor to delete.'
+        error: 'Must be Admin of project or original commentor to delete.',
       })
     }
 
     const foundType = await determinedType.findById(typeId).populate('comments')
 
     const filteredComments = foundType.comments.filter(
-      comment => comment._id.toString() !== commentId
+      (comment) => comment._id.toString() !== commentId
     )
 
     const updatedType = new determinedType({
       ...foundType.toObject(),
-      comments: filteredComments
+      comments: filteredComments,
     })
     // Delete Comment
     await Comment.findByIdAndRemove(commentId)
