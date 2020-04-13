@@ -46,6 +46,14 @@ exports.comments_get = async (req, res, next) => {
       })
     }
 
+    // Sort comments by newest first
+    typeFound.comments = typeFound.comments.sort((a, b) => {
+      const dateA = new Date(a.created)
+      const dateB = new Date(b.created)
+
+      return dateB - dateA
+    })
+
     res.send(typeFound.comments)
   } catch (err) {
     next(err)
