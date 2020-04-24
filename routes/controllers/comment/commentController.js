@@ -164,7 +164,7 @@ exports.comment_delete_post = async (req, res, next) => {
     // Determine if user is allowed to delete (admin or original user)
     const adminCheck = project.admin.toString() === userId
     const commenterCheck = comment.user.toString() === userId
-    if (!adminCheck || !commenterCheck) {
+    if (!(adminCheck || commenterCheck)) {
       return res.json({
         error: 'Must be Admin of project or original commentor to delete.',
       })
