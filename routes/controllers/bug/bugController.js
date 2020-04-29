@@ -45,7 +45,7 @@ exports.bug_create_post = async (req, res, next) => {
       description: body.description,
       project,
       createdBy: user,
-      created: Date.now()
+      created: Date.now(),
     })
 
     const savedBug = await createdBug.save()
@@ -73,11 +73,11 @@ exports.bug_update_post = async (req, res, next) => {
     const updatedBug = new Bug({
       ...bug.toObject(),
       name: body.name,
-      description: bug.description
+      description: bug.description,
     })
 
     const savedBug = await Bug.findByIdAndUpdate(bugId, updatedBug, {
-      new: true
+      new: true,
     })
 
     res.json(savedBug)
@@ -89,6 +89,7 @@ exports.bug_update_post = async (req, res, next) => {
 exports.bug_delete_post = async (req, res, next) => {
   const projId = req.params.projId
   const bugId = req.params.bugId
+  const userId = req.decodedToken.id
 
   try {
     const project = await Project.findById(projId)
@@ -99,12 +100,12 @@ exports.bug_delete_post = async (req, res, next) => {
     }
 
     const filteredBugs = project.bugs.filter(
-      bug => bug._id.toString() !== bugId
+      (bug) => bug._id.toString() !== bugId
     )
 
     const updatedProject = new Project({
       ...project.toObject(),
-      bugs: filteredBugs
+      bugs: filteredBugs,
     })
 
     await Bug.findByIdAndRemove(bugId)
